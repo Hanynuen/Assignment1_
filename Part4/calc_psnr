@@ -1,0 +1,44 @@
+function psnr_val = calc_psnr(ref_file, test_file)
+% CALC_PSNR - Tính PSNR giữa hai file âm thanh (WAV hoặc MP3)
+%   ref_file  : File gốc (chuẩn) dạng .wav
+%   test_file : File đã nén (ví dụ: mp3 hoặc wav khác)
+%
+%   Kết quả trả về: PSNR tính bằng decibel (dB)
+
+    % Đọc 2 file âm thanh
+    [x, Fs1] = audioread(ref_file);
+    [y, Fs2] = audioread(test_file);
+
+    % Resample nếu khác sample rate
+    if Fs1 ~= Fs2
+        y = resample(y, Fs1, Fs2);
+    end
+
+    % Chuyển về mono nếu là stereo
+    if size(x,2) > 1
+        x = mean(x, 2);
+    end
+    if size(y,2) > 1
+        y = mean(y, 2);
+    end
+
+    % Cắt cho bằng độ dài ngắn hơn
+    min_len = min(length(x), length(y));
+    x = x(1:min_len);
+    y = y(1:min_len);
+
+    % Chuẩn hóa [-1, 1]
+    x = x / max(abs(x));
+    y = y / max(abs(y));
+
+    % Tính PSNR
+    mse = mean((x - y).^2);
+    if mse == 0
+        psnr_val = Inf;
+    else
+        psnr_val = 20 * log10(1 / sqrt(mse));
+    end
+
+    fprintf('✅ PSNR giữa "%s" và "%s": %.2f dB\n', ref_file, test_file, psnr_val);
+end
+
