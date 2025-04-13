@@ -1,0 +1,17 @@
+% Đọc file WAV gốc
+[input_audio, fs] = audioread('Group12.wav');  % ← Đổi tên nếu file bạn khác
+
+% Tham số WDRC
+CR = 3;             % Compression ratio
+AT = 0.01;          % Attack time (seconds)
+RT = 0.1;           % Release time (seconds)
+K_low = -40;        % Lower kneepoint (dB SPL)
+K_up = 0;           % Upper kneepoint (dB SPL)
+kneeWidth = 10;     % Soft-knee width (dB)
+
+% Gọi hàm nén WDRC
+compressed_audio = wdrc(input_audio, fs, CR, AT, RT, K_low, K_up, kneeWidth);
+
+% Ghi ra file WAV mới
+audiowrite('Group12_wdrc.wav', compressed_audio, fs);
+disp('Đã nén xong và lưu thành Group12_wdrc.wav');
