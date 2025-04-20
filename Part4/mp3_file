@@ -1,0 +1,11 @@
+%MP3 compression
+% InputFile and OutputFile
+inputWav = 'HaM.wav';
+outputMp3 = 'HaM_mp3.mp3';
+
+% Bitrate
+bitrate = '128k';
+
+% Call ffmpeg to convert WAV → MP3
+cmd = sprintf('ffmpeg -i "%s" -ab %s "%s"', inputWav, bitrate, outputMp3);
+system(cmd);
