@@ -1,0 +1,16 @@
+%Tính PSNR
+psnr_wdrc = calc_psnr('Group12.wav', 'Group12_wdrc.wav');
+psnr_mp3  = calc_psnr('Group12.wav', 'Group12_mp3.mp3');
+
+fprintf('🔊 PSNR (WDRC) = %.2f dB\n', psnr_wdrc);
+fprintf('🎧 PSNR (MP3)  = %.2f dB\n', psnr_mp3);
+
+% Graph
+methods = {'WDRC', 'MP3'};
+psnr_values = [psnr_wdrc, psnr_mp3];
+
+figure;
+bar(psnr_values);
+set(gca, 'xticklabel', methods);
+ylabel('PSNR (dB)');
+grid on;
